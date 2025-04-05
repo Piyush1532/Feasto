@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+  "type": "module",
   "scripts": {
-  
-    "serve": "nodemon serve.js"
+    "server": "nodemon serve.js"
   },
   "author": "",
   "license": "ISC",
