@@ -5,9 +5,12 @@ import {Routes,Route} from "react-router-dom"
 import Add from './Pages/Add/Add'
 import Lists from './Pages/Lists/Lists'
 import Orders from './Pages/Orders/Orders'
+import { ToastContainer } from 'react-toastify';
+
 const App = () => {
   return (
     <div>
+      <ToastContainer/>
       <Navbar/>
       <hr />
       <div className="app-content">
