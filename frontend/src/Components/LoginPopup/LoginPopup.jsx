@@ -1,25 +1,55 @@
-import React, { useState } from 'react'
+import React, { useCallback, useContext, useState } from 'react'
 import "./loginpopup.css"
 import { assets } from '../../assets/assets'
+import { StoreContext } from '../../Context/StoreContext'
+import axios from "axios"
 const LoginPopup = ({ setShowLogin }) => {
+
+  const {url}=useContext(StoreContext)
+
   const [currentState, setCurrentState] = useState("Login")
+  const [data,setData]=useState({
+    name:"",
+    email:"",
+    password:""
+  })
+
+  const onchangeHandler=(event)=>{
+const name=event.target.name
+const value=event.target.value
+setData(data=>({...data,[name]:value}))
+  }
+
+  const onLogin=async (event) => {
+    event.preventDefault()
+
+    let newUrl=url
+
+    if (currentState==="Login") {
+      newUrl+="/api/user/login"
+    }else{
+       newUrl+="/api/user/register"
+    }
+
+    const response=await axios.post(newUrl,data)
+  }
 
   return (
     <div className='login-popup'>
-      <form className='login-popup-container'>
+      <form className='login-popup-container' onSubmit={onLogin}>
         <div className="login-popup-title">
           <h2>{currentState}</h2>
           <img src={assets.cross_icon} alt="" onClick={() => setShowLogin(false)} />
         </div>
         <div className="login-popup-input">
-          {currentState === "Login" ? <></> : <input type="text" placeholder='Your Name' required />}
+          {currentState === "Login" ? <></> : <input type="text" placeholder='Your Name' required name="name" value={data.name} onChange={onchangeHandler} />}
 
 
 
-          <input type="email" placeholder='Your Email' required />
-          <input type="password" placeholder='Password' required />
+          <input type="email" placeholder='Your Email' required name='email' value={data.email} onChange={onchangeHandler}/>
+          <input type="password" placeholder='Password' required name='password' value={data.password} onChange={onchangeHandler} />
         </div>
-        <button>{currentState === "Sign Up" ? "Create Account" : "Login"}</button>
+        <button type='submit'>{currentState === "Sign Up" ? "Create Account" : "Login"}</button>
         <div className="login-popup-condition">
           <input type="checkbox" required />
           <p>By continuing ,I agree to the terms of use & privacy policy</p>
