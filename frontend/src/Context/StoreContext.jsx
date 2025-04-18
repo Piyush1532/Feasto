@@ -6,7 +6,7 @@ export const StoreContext=createContext(null)
 const StoreContextProvider=(props)=>{
  
 const [cartItems,setCartItems]=useState({})
-
+const url=import.meta.env.VITE_BACKEND_URL
 const addtoCart=(itemId)=>{
 if (!cartItems[itemId]) {
     setCartItems((prev)=>({...prev,[itemId]:1}))
@@ -35,7 +35,8 @@ cartItems,
 setCartItems,
 addtoCart,
 removeFromCart,
-getTotalCartAmount
+getTotalCartAmount,
+url
     }
     return(
         <StoreContext.Provider value={contextValue}>
