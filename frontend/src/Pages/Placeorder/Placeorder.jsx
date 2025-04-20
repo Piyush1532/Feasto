@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import "./placeorder.css"
-import { StoreContext } from '../../Context/storeContext'
+import { StoreContext } from '../../Context/StoreContext'
 const Placeorder = () => {
 
 const {getTotalCartAmount}=useContext(StoreContext)
