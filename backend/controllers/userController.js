@@ -27,7 +27,7 @@ const loginUser = async (req, res) => {
   }
 };
 
-//register user
+//register userb
 const registerUser = async (req, res) => {
   let { name, email, password } = req.body;
   try {
