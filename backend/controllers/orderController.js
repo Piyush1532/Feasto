@@ -6,16 +6,16 @@ dotenv.config();
 
 //placing user order from frontend
 
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+
 const placeOrder = async (req, res) => {
  
 const frontend_url="http://localhost:5173"
 
   try {
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
-console.log(process.env.STRIPE_SECRET_KEY);
     const newOrder = new orderModel({
-      userId: req.body.userId,
+      userId: req.userId,
       items: req.body.items,
       amount: req.body.amount,
       address: req.body.address,
@@ -30,8 +30,8 @@ console.log(process.env.STRIPE_SECRET_KEY);
           name: item.name,
         },
         unit_amount: item.price * 100 * 80,
-        quantity: item.quantity,
       },
+      quantity: item.quantity
     }));
     lineItems.push({
       price_data: {
