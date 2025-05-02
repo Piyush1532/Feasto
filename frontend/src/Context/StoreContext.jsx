@@ -47,9 +47,7 @@ const fetchFoodList=async (req,res) => {
 
 const loadCartData=async (token) => {
  const response=await axios.post(url+"/api/cart/get",{},{headers:{token}})   
-
-
- setCartItems(response.data.cartData)
+ setCartItems(response.data.cartData || {})
 }
 
 useEffect(()=>{
