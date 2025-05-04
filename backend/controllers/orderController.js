@@ -47,8 +47,8 @@ const frontend_url="http://localhost:5173"
 const session=await stripe.checkout.sessions.create({
     line_items:lineItems,
     mode:"payment",
-    success_url:`${frontend_url}/verfify?success=true&orderId=${newOrder._id}`,
-    cancel_url:`${frontend_url}/verfify?success=false&orderId=${newOrder._id}`,
+    success_url:`${frontend_url}/verify?success=true&orderId=${newOrder._id}`,
+    cancel_url:`${frontend_url}/verify?success=false&orderId=${newOrder._id}`,
 })
 
 res.json({success:true,session_url:session.url})
@@ -59,4 +59,35 @@ res.json({success:false,message:error})
   }
 };
 
-export { placeOrder };
+const verifyOrder=async (req,res) => {
+ const {orderId,success}=req.body 
+  try {
+    if (success=="true") {
+      await orderModel.findByIdAndUpdate(orderId,{payment:true})
+      res.json({success:true,message:"Paid"})
+    }
+    else{
+      await orderModel.findByIdAndDelete(orderId)
+      res.json({success:false,message:"Not paid"})
+    }
+  } catch (error) {
+    res.json({success:false,message:"error"})
+  }
+
+
+}
+
+//users order for frontend
+
+const userOrders=async (req,res) => {
+  try {
+    const orders=await orderModel.find({userId:req.userId})
+res.json({success:true,data:orders})
+  } catch(error){
+    res.json({success:false,message:"Error"})
+  }
+}
+
+
+
+export { placeOrder ,verifyOrder,userOrders};
